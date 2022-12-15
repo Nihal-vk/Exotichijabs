@@ -1,0 +1,360 @@
+<!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Checkout</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">home</a></li>
+                    <li class="breadcrumb-item active">Checkout</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+
+<!-- Start Cart  -->
+<div class="cart-box-main">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-12 col-lg-12 mb-3">
+                <h6 id="err" style="color:red;"></h6>
+                <form id="checkout-form">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="shipping-method-box">
+                                <div class="title-left">
+                                    <h3>Payment Method</h3>
+                                </div>
+                                <div class="title"> <span>Payment</span> </div>
+                                <div class="d-block my-3">
+                                    <div class="custom-control custom-radio">
+                                        <input id="credit" name="paymentMethod" type="radio" value="COD"
+                                            class="custom-control-input" checked required>
+                                        <label class="custom-control-label" for="credit">COD</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input id="debit" name="paymentMethod" type="radio" class="custom-control-input"
+                                            value="razorpay" required>
+                                        <label class="custom-control-label" for="debit">razorpay</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input id="paypal" name="paymentMethod" type="radio" value="paypal"
+                                            class="custom-control-input" required>
+                                        <label class="custom-control-label" for="paypal">Paypal</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12">
+                            <div class="title-left">
+                                <h3>Shopping cart</h3>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-6">
+                            <div class="odr-box">
+                                <div class="accordion accordion-borderless" id="accordionFlushExampleX">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingOneX">
+                                            <button
+                                                class="accordion-button collapsed rounded border border-light border display-4 btn-secondary btn-lg btn-block"
+                                                type="button" data-mdb-toggle="collapse"
+                                                data-mdb-target="#flush-collapseOneX" aria-expanded="true"
+                                                aria-controls="flush-collapseOneX">
+                                                Saved Address
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapseOneX" class="accordion-collapse collapse show"
+                                            aria-labelledby="flush-headingOneX"
+                                            data-mdb-parent="#accordionFlushExampleX">
+                                            <div class="accordion-body">
+                                                {{#each address}}
+                                                <hr class="mb-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                        value="{{this.uniID}}" id="flexRadioDefault0">
+                                                    <label class="form-check-label" for="flexRadioDefault0">
+                                                        Address
+                                                    </label>
+                                                    <div class="float-right">
+                                                        <a href="/delete-saveAddress/{{this.uniID}}">
+                                                            <i class=" fas fa-trash" style="color:#b60505;"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+
+                                                <input class="form-control" type="text" placeholder="{{this.name}}"
+                                                    readonly>
+                                                <input class="form-control" type="number" placeholder="{{this.number}}"
+                                                    readonly>
+                                                <input class="form-control" type="email" placeholder="{{this.email}}"
+                                                    readonly>
+                                                <input class="form-control" type="text" placeholder="{{this.address}}"
+                                                    readonly>
+                                                <input class="form-control" type="text" placeholder="{{this.city}}"
+                                                    readonly>
+                                                <input class="form-control" type="text" placeholder="{{this.state}}"
+                                                    readonly>
+                                                <input class="form-control" type="number" placeholder="{{this.pinCode}}"
+                                                    readonly>
+
+                                                <hr class="mb-4">
+                                                {{/each}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 ml-auto">
+                            <div class="order-box">
+                                <div class="accordion accordion-flush" id="accordionFlushExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingOne">
+                                            <button
+                                                class="accordion-button collapsed rounded border border-light border display-4 btn-secondary btn-lg btn-block"
+                                                type="button" data-mdb-toggle="collapse"
+                                                data-mdb-target="#flush-collapseOne" aria-expanded="false"
+                                                aria-controls="flush-collapseOne">
+                                                Add new address
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingOne" data-mdb-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+
+                                                <div class="mb-3">
+                                                    <label for="username">Username *</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="username"
+                                                            name="name" placeholder="" required>
+                                                        <div class="invalid-feedback" style="width: 100%;"> Your
+                                                            username is
+                                                            required.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email">Email Address *</label>
+                                                    <input type="email" class="form-control" id="email" name="email"
+                                                        placeholder="">
+                                                    <div class="invalid-feedback"> Please enter a valid email
+                                                        address
+                                                        for
+                                                        shipping updates.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="username">phonenumber *</label>
+                                                    <div class="input-group">
+                                                        <input type="number" class="form-control" id="phone"
+                                                            name="number" placeholder="" required>
+                                                        <div class="invalid-feedback" style="width: 100%;"> Your
+                                                            username is
+                                                            required.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="address">Address *</label>
+                                                    <input type="text" class="form-control" id="address" name="address"
+                                                        placeholder="" required>
+                                                    <div class="invalid-feedback"> Please enter your shipping
+                                                        address.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="address2">city *</label>
+                                                    <input type="text" class="form-control" name="city" id="city"
+                                                        placeholder="">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="address2">state *</label>
+                                                    <input type="text" class="form-control" name="state" id="state"
+                                                        placeholder="">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="address2">pinCode *</label>
+                                                    <input type="number" class="form-control" name="pinCode"
+                                                        id="pincode" placeholder="">
+                                                </div>
+                                                <div class="mb-3">
+
+                                                    <input type="text" class="form-control" id="name" name="userId"
+                                                        value="{{user._id}}" placeholder="" hidden>
+                                                    <div class="invalid-feedback"> Please enter your shipping
+                                                        address.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" value="new" type="radio"
+                                                            name="flexRadioDefault" id="flexRadioDefault1">
+                                                        <label class="form-check-label" for="flexRadioDefault1 ">
+                                                            Proceed with this Address
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 ml-auto">
+                            <div class="order-box">
+                                <div class="title-left">
+                                    <h3>Your order</h3>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="font-weight-bold">Product</div>
+                                    <div class="ml-auto font-weight-bold">Total</div>
+                                </div>
+                                <hr class="my-1">
+                                <div class="d-flex">
+                                    <h4>Sub Total</h4>
+                                    <div class="ml-auto font-weight-bold"> ₹{{total}} </div>
+                                </div>
+                                <div class="d-flex">
+                                    <h4>Discount</h4>
+                                    <div class="ml-auto font-weight-bold"> $ 40 </div>
+                                </div>
+                                <hr class="my-1">
+                                <div class="d-flex">
+                                    <h4>Coupon Discount</h4>
+                                    <div class="ml-auto font-weight-bold"> $ 10 </div>
+                                </div>
+                                <div class="d-flex">
+                                    <h4>Tax</h4>
+                                    <div class="ml-auto font-weight-bold"> $ 2 </div>
+                                </div>
+                                <div class="d-flex">
+                                    <h4>Shipping Cost</h4>
+                                    <div class="ml-auto font-weight-bold"> Free </div>
+                                </div>
+                                <hr>
+                                <div class="d-flex gr-total">
+                                    <h5>Grand Total</h5>
+                                    <div class="ml-auto h5"> ₹{{total}} </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="col-12 d-flex shopping-box"> <button type="submit"
+                                    class="ml-auto btn btn-danger">Place
+                                    Order</button> </div>
+
+                        </div>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+</div>
+<!-- End Cart -->
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+    $("#checkout-form").submit((e) => {
+
+        const savedAddress = document.getElementById('flexRadioDefault0')
+        const newAddress = document.getElementById('flexRadioDefault1')
+
+
+        const err = document.getElementById("err")
+
+        // if (savedAddress.checked === false && newAddress.checked === false) {
+        //     e.preventDefault()
+        //     err.innerText = 'Address Not Selected!'
+        // }
+
+        console.log('hey')
+        e.preventDefault()
+        $.ajax({
+            url: '/checkout',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+                if (response.COD_success) {
+                    location.href = '/orderplaced'
+                }
+                if (response.razorpayMethod) {
+                    console.log('hahahahahahahaaahhdhjkjhjdhjkldh;cnd;kdln;/LLVLKIVKW')
+                    razorpayPayment(response)
+                }
+                if(response.readytoredirect){
+
+                    location.replace(response.redirectLink)
+                }
+
+            }
+        })
+    })
+
+    function razorpayPayment(order) {
+        var options = {
+            "key": "rzp_test_XJCuMB71OKgGb7", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Exotic hijabs",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                //  alert(response.razorpay_payment_id);
+                //  alert(response.razorpay_order_id);
+                //  alert(response.razorpay_signature)
+                //
+                verifyPayment(response, order)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+
+    function verifyPayment(Payment, order) {
+        $.ajax({
+            url: '/verify-payment',
+            data: {
+                Payment,
+                order
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    location.href = '/orderplaced'
+                } else {
+                    alert('payment failed')
+                }
+            }
+        })
+
+    }
+
+</script>

@@ -1,0 +1,114 @@
+<!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Wishlist</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active">Wishlist</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+
+<!-- Start Wishlist  -->
+<div class="wishlist-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-main table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Images</th>
+                                <th>Product Name</th>
+                                <th>Unit Price </th>
+                                <th>Stock</th>
+                                <th>Add Item</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each products}}
+                            <tr>
+                                <td class="thumbnail-img">
+                                    <a href="#">
+                                        <img class="img-fluid" src="/admin/productimage/{{this.product._id}}.jpg"
+                                            alt="" />
+                                    </a>
+                                </td>
+                                <td class="name-pr">
+                                    <a href="#">
+                                        {{this.product.productName}}
+                                    </a>
+                                </td>
+                                <td class="price-pr">
+                                    <p>₹{{this.product.price}}</p>
+                                </td>
+                                <td class="quantity-box">In Stock</td>
+                                <td class="add-pr">
+                                    <a class="btn hvr-hover" href="#"
+                                        onclick="return addtocart('{{this.product._id}}')">Add to Cart</a>
+                                </td>
+                                <td class="remove-pr">
+                                    <button type="button" class="btn btn-danger"
+                                        onclick=" sweetalertremove('{{this._id}}','{{this.product._id}}')">Remove</button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Wishlist -->
+
+<script>
+
+    function deleteWishlistPro(wishId, proId) {
+
+        $.ajax({
+            url: '/delete-wishPro',
+            data: {
+                wishList: wishId,
+                product: proId
+            },
+            method: 'post',
+            success: () => {
+
+            }
+        })
+
+    }
+
+
+    function sweetalertremove(wishId, proId) {
+        console.log('12345')
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this product!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    deleteWishlistPro(wishId, proId);
+                    swal("Product has been removed!", {
+                        icon: "success",
+                    }).then(() => {
+                        location.reload()
+                    });
+                } else {
+                    swal("product is safe!");
+                }
+            });
+    }
+
+
+</script>

@@ -1,0 +1,289 @@
+<style>
+.vl {
+  border-left: 6px solid #b60505;
+  height: 400px;
+}
+</style>
+
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">User</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                            alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                        <h5 class="my-3">{{users.Firstname}}</h5>
+                        <p class="text-muted mb-1">{{users.Email}}</p>
+                        <p class="text-muted mb-4">{{users.phonenumber}}</p>
+                        <div class="d-flex justify-content-center mb-2">
+                            <button type="button" class="btn btn-primary">Follow</button>
+                            <button type="button" class="btn btn-outline-primary ms-1">Message</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4 mb-lg-0">
+                    <form>
+                        <div class="accordion accordion-borderless" id="accordionFlushExampleX">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingOneX">
+                                    <button
+                                        class="accordion-button collapsed rounded border border-light border display-4 btn-secondary btn-lg btn-block"
+                                        type="button" data-mdb-toggle="collapse" data-mdb-target="#flush-collapseOneX"
+                                        aria-expanded="true" aria-controls="flush-collapseOneX">
+                                        Saved Address
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseOneX" class="accordion-collapse collapse show"
+                                    aria-labelledby="flush-headingOneX" data-mdb-parent="#accordionFlushExampleX">
+                                    <div class="accordion-body">
+                                        {{#each address}}
+                                        <hr class="mb-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" value="{{this.uniID}}" type="radio" name="flexRadioDefault"
+                                                id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                Address
+                                            </label>
+                                            <div class="float-right">
+                                                <a href="/delete-address/{{this.uniID}}">
+                                                    <i class=" fas fa-trash" style="color:#b60505;"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    
+                                        <input class="form-control" type="text" placeholder="{{this.firstname}} {{this.lastname}}" readonly>
+                                        <input class="form-control" type="number" placeholder="{{this.number}}" readonly>
+                                        <input class="form-control" type="email" placeholder="{{this.email}}" readonly>
+                                        <input class="form-control" name="address" type="text" placeholder="{{this.address}}" readonly>
+                                        <input class="form-control" name="city" type="text" placeholder="{{this.city}}" readonly>
+                                        <input class="form-control" name="state" type="text" placeholder="{{this.state}}" readonly>
+                                        <input class="form-control" name="pinCode" type="number" placeholder="{{this.pinCode}}" readonly>
+                                    
+                                        <hr class="mb-4">
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body"> 
+                        <div class="col-md-12 d-flex justify-content-between">
+                           <div class="col-md-6">
+                            <form action="/edit-user/{{userDetails._id}}" method="post">
+                                <div class="mb-3">
+                                    <label for="username">Firstname *</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="username" name="firstname" value="{{userDetails.Firstname}}" placeholder="" required>
+                                        <div class="invalid-feedback" style="width: 100%;"> Your
+                                            username is
+                                            required.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="username">Last name *</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="username" name="lastname"  value="{{userDetails.Lastname}}" placeholder="" required>
+                                        <div class="invalid-feedback" style="width: 100%;"> Your
+                                            username is
+                                            required.
+                                        </div>
+                                    </div>
+                                </div>
+                               <div class="mb-3">
+                                <label for="username">phonenumber *</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="phone" value="{{userDetails.phonenumber}}" name="number" placeholder=""
+                                        required>
+                                    <div class="invalid-feedback" style="width: 100%;"> Your
+                                        username is
+                                        required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{userDetails.Email}}" placeholder="">
+                                <div class="invalid-feedback"> Please enter a valid email
+                                    address
+                                    for
+                                    shipping updates.
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success ml-auto">Save</button>
+                            </form>
+                           </div>
+                           <div class="vl"></div>
+                            <div class="col-md-6">
+                                <form action="/addAddress" method="post">
+                                    <input type="text" class="form-control" id="name" name="Firstname" value="{{user.Firstname}}" placeholder="" hidden>
+                                    <input type="text" class="form-control" id="name" name="Lastname" value="{{user.Lastname}}" placeholder="" hidden>
+                                    <input type="text" class="form-control" id="name" name="Phone" value="{{user.phonenumber}}" placeholder="" hidden>
+                                    <input type="text" class="form-control" id="name" name="Email" value="{{user.Email}}" placeholder="" hidden>
+                                    <div class="mb-3">
+                                        <label for="address">Address *</label>
+                                        <input type="text" class="form-control" id="address" name="address" placeholder="" required>
+                                        <div class="invalid-feedback"> Please enter your shipping
+                                            address.
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="address2">city *</label>
+                                        <input type="text" class="form-control" name="city" id="city" placeholder="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="address2">state *</label>
+                                        <input type="text" class="form-control" name="state" id="state" placeholder="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="address2">pinCode *</label>
+                                        <input type="number" class="form-control" name="pinCode" id="pincode" placeholder="">
+                                    </div>
+                                    <input type="text" class="form-control" id="name" name="userId" value="{{user._id}}" placeholder="" hidden>
+                                    <button type="submit" class="btn btn-success ml-auto">Add</button>
+                                
+                                </form>
+                            </div>
+                            </div>
+                        {{!-- <form action="/addAddress" method="post">
+
+                            <div class="mb-3">
+                                <label for="username">Username *</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="username" name="name" placeholder=""
+                                        required>
+                                    <div class="invalid-feedback" style="width: 100%;"> Your
+                                        username is
+                                        required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="">
+                                <div class="invalid-feedback"> Please enter a valid email
+                                    address
+                                    for
+                                    shipping updates.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="username">phonenumber *</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="phone" name="number" placeholder=""
+                                        required>
+                                    <div class="invalid-feedback" style="width: 100%;"> Your
+                                        username is
+                                        required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address">Address *</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder=""
+                                    required>
+                                <div class="invalid-feedback"> Please enter your shipping
+                                    address.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address2">city *</label>
+                                <input type="text" class="form-control" name="city" id="city" placeholder="">
+                            </div>
+                            <div class="mb-3">
+                                <label for="address2">state *</label>
+                                <input type="text" class="form-control" name="state" id="state" placeholder="">
+                            </div>
+                            <div class="mb-3">
+                                <label for="address2">pinCode *</label>
+                                <input type="number" class="form-control" name="pinCode" id="pincode" placeholder="">
+                            </div>
+                            <div class="mb-3">
+
+                                <input type="text" class="form-control" id="name" name="userId" value="{{user._id}}"
+                                    placeholder="" hidden>
+                                <div class="invalid-feedback"> Please enter your shipping
+                                    address.
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success ml-auto">Add</button>
+                        </form> --}}
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Start Cart  -->
+                    <div class="cart-box-main">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-main table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>date</th>
+                                                    <th>Address</th>
+                                                    <th>Price</th>
+                                                    <th>paymentMethod</th>
+                                                    <th>status</th>
+                                                    <th>options</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each orders}}
+                                                <tr>
+                                                    <td class="thumbnail-img">
+                                                        {{this.date}}
+                                                    </td>
+                                                    <td class="price-pr">
+                                                        {{this.deliverydetails.name}}<br>
+                                                        {{this.deliverydetails.number}}<br>
+                                                        {{this.deliverydetails.email}}<br>
+                                                        {{this.deliverydetails.address}}<br>
+                                                        {{this.deliverydetails.city}}<br>
+                                                        {{this.deliverydetails.state}}<br>
+                                                        {{this.deliverydetails.pinCode}}<br>
+                                                    </td>
+                                                    <td class="price-pr">
+                                                        <p>{{this.totalAmount}}</p>
+                                                    </td>
+                                                    <td class="price-pr">
+                                                        <p>{{this.paymentMethod}}</p>
+                                                    </td>
+                                                    <td class="total-pr">
+                                                        <p> {{this.status}}</p>
+                                                    </td>
+                                                    <td class="remove-pr">
+                                                        <a href="/view-orderedProducts/{{this._id}}"
+                                                            class="btn btn-success">View
+                                                            products</a>
+                                                    </td>
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>

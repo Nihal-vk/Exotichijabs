@@ -1,0 +1,102 @@
+<!-- Start Cart  -->
+<div class="cart-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-main table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th><No</th>
+                                <th>date</th>
+                                <th>Address</th>
+                                <th>Price</th>
+                                <th>paymentMethod</th>
+                                <th>status</th>
+                                <th>options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each orders}}
+                            <tr>
+                                <td class="price-pr"><span class="create_index"></span></td>
+                                <td class="thumbnail-img">
+                                    {{this.date}}
+                                </td>
+                                <td class="price-pr">
+                                    {{this.deliverydetails.name}}<br>
+                                    {{this.deliverydetails.number}}<br>
+                                    {{this.deliverydetails.email}}<br>
+                                    {{this.deliverydetails.address}}<br>
+                                    {{this.deliverydetails.city}}<br>
+                                    {{this.deliverydetails.state}}<br>
+                                    {{this.deliverydetails.pinCode}}<br>
+                                </td>
+                                <td class="price-pr">
+                                    <p>{{this.totalAmount}}</p>
+                                </td>
+                                <td class="price-pr">
+                                    <p>{{this.paymentMethod}}</p>
+                                </td>
+                                <td class="total-pr">
+                                    <p> {{this.status}}</p>
+                                </td>
+                                <td class="remove-pr">
+                                    <a href="/view-orderedProducts/{{this._id}}" class="btn btn-success">View
+                                        products</a>
+
+                                    <button type="button" class="btn btn-danger"
+                                        onclick=" sweetalertremove('{{this._id}}')">Cancel order</button>
+
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+
+            function cancelOrder(orderId) {
+                $.ajax({
+                    url: '/cancel-Order/' + orderId,
+                    method: 'get',
+                    success: (response) => {
+
+                    }
+                })
+            }
+
+
+            function sweetalertremove(orderId) {
+                console.log('12345')
+                swal({
+                    title: "Are you sure?",
+                    text: "Once cancelled, you will not be able to recover this product!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            cancelOrder(orderId);
+                            swal("Product has been cancelled!", {
+                                icon: "success",
+                            }).then(() => {
+                                location.reload()
+                            });
+                        } else {
+                            swal("product is safe!");
+                        }
+                    });
+            }
+        </script>
+
+        <script>
+    var divs = document.querySelectorAll('.create_index');
+    for (var i = 0; i < divs.length; ++i) {
+        divs[i].innerHTML = i + 1;
+    }
+</script>

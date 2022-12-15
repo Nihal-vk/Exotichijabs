@@ -1,0 +1,229 @@
+<!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Cart</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active">Cart</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+{{#if products}}
+<!-- Start Cart  -->
+<div class="cart-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-main table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Images</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                {{!-- <th>Total</th> --}}
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each products}}
+                            <tr>
+
+                                <td class="thumbnail-img">
+                                    <a href="#">
+                                        <img class="img-fluid" src="/admin/productimage/{{this.product._id}}.jpg"
+                                            alt="" />
+                                    </a>
+                                </td>
+                                <td class="name-pr">
+                                    <a href="#">
+                                        {{this.product.productName}}
+                                    </a>
+                                </td>
+                                <td class="price-pr">
+                                    <p>₹{{this.product.price}}</p>
+                                </td>
+
+                                <td class="quantity-box"><button
+                                        onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',-1)">-</button>
+                                    {{!-- <input type="number" class="w-25" size="4" value="{{this.quantity}}" min="0"
+                                        step="1" class="c-input-text qty text"> --}}
+                                    <span id="{{this.product._id}}">{{this.quantity}}</span>
+                                    <button
+                                        onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1)">+</button>
+                                </td>
+                                {{!-- <td class="total-pr">
+                                    <p>$ 80.0</p>
+                                </td> --}}
+                                <td class="remove-pr">
+                                    {{!-- <a class="btn btn-danger">
+                                        <i class=" fas fa-times"></i>
+                                    </a> --}}
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-danger"
+                                        onclick=" sweetalertremove('{{this._id}}','{{this.product._id}}')">Remove</button>
+
+                                </td>
+
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-5">
+            <div class="col-lg-6 col-sm-6">
+                <div class="coupon-box">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code"
+                            type="text">
+                        <div class="input-group-append">
+                            <button class="btn btn-theme" type="button">Apply Coupon</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6">
+                <div class="update-box">
+                    <input value="Update Cart" type="submit">
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-5">
+            <div class="col-lg-8 col-sm-12"></div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="order-box">
+                    <h3>Order summary</h3>
+                    {{!-- <div class="d-flex">
+                        <h4>Sub Total</h4>
+                        <div class="ml-auto font-weight-bold"> ₹{{total}} </div>
+                    </div>
+                    <div class="d-flex">
+                        <h4>Discount</h4>
+                        <div class="ml-auto font-weight-bold"> $ 40 </div>
+                    </div> --}}
+                    <hr class="my-1">
+                    <div class="d-flex">
+                        <h4>Coupon Discount</h4>
+                        <div class="ml-auto font-weight-bold"> $ 10 </div>
+                    </div>
+                    {{!-- <div class="d-flex">
+                        <h4>Tax</h4>
+                        <div class="ml-auto font-weight-bold"> $ 2 </div>
+                    </div> --}}
+                    <div class="d-flex">
+                        <h4>Shipping Cost</h4>
+                        <div class="ml-auto font-weight-bold"> Free </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex gr-total">
+                        <h5>Grand Total</h5>
+                        <div class="ml-auto h5"> ₹<span id="total">{{total}}</span></div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <div class="col-12 d-flex shopping-box"><a href="/proceedTo-checkout"
+                    class="ml-auto  hvr-hover">Checkout</a>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+<!-- End Cart -->
+{{else}}
+<div class="container">
+    <div class="row ">
+        <div class="col-lg-12 d-flex justify-content-center">
+            <img src="/images/empty-cart.png" class="img-fluid">
+        </div>
+    </div>
+</div>
+{{/if}}
+
+
+
+<script>
+    function changeQuantity(cartId, proId, userId, count) {
+        let quantity = parseInt(document.getElementById(proId).innerHTML)
+        count = parseInt(count)
+        $.ajax({
+            url: '/change-productQuantity',
+            data: {
+                user: userId,
+                cart: cartId,
+                product: proId,
+                count: count,
+                quantity: quantity
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.removeproduct) {
+                    alert("product removed from the cart")
+                    location.reload()
+                } else {
+                    console.log(response)
+                    document.getElementById(proId).innerHTML = quantity + count
+                    document.getElementById('total').innerHTML = response.total
+
+                }
+
+            }
+        })
+    }
+
+    function deletecartProduct(cartId, proId) {
+        console.log('heheh')
+        console.log(cartId, proId)
+        $.ajax({
+            url: '/delete-cartProduct',
+            data: {
+                cart: cartId,
+                product: proId
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.removeproduct) {
+
+                }
+
+            }
+        })
+    }
+
+    function sweetalertremove(cartId, proId) {
+        console.log('12345')
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this product!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    deletecartProduct(cartId, proId);
+                    swal("Product has been deleted!", {
+                        icon: "success",
+                    }).then(() => {
+                        location.reload()
+                    });
+                } else {
+                    swal("product is safe!");
+                }
+            });
+    }
+
+
+</script>
