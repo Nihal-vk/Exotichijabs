@@ -1,110 +1,96 @@
-const imagebox1 = document.getElementById('screen1')
-const crop_btn1 = document.getElementById('crop-1')
-const input1 = document.getElementById('imgFile1')
-document.getElementById("addbtn").disabled = false;
-
-//function viewImage1(event) {
-//var fileInput1 = document.getElementById('imgFile1');
-//var filePath1 = fileInput1.value;
-//var allowedExtensions = /(\.jpg|\.png|\.jpeg|\.JPEG|\.webp)$/i;
-//if (!allowedExtensions.exec(filePath1)) {
-//  fileInput1.value = '';
-//  swal("There is a problem!", "Please choose image file.");
-//  return false;
-//} else {
-//  document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0])
-//}
-//}
-
-input1.addEventListener('change', () => {
-    const img_data1 = input1.files[0]
-    const url1 = URL.createObjectURL(img_data1)
-    imagebox1.innerHTML = `<img src="${url1}" id="img1" style="width:100%;">`
-    const img1 = document.getElementById('img1')
-    document.getElementById("addbtn").disabled = true;
-    document.getElementById('screen1').style.display = 'block'
-    document.getElementById('crop-1').style.display = 'block'
-    document.getElementById('image-1').style.display = 'block'
-
-    const cropper1 = new Cropper(img1, {
-        autoCropArea: 1,
-        viewMode: 1,
-        scalable: false,
-        zoomable: false,
-        movable: false,
-        minCropBoxWidth: 50,
-        minCropBoxHeight: 50,
-        aspectRatio: 1 / 1,
-    })
-
-    crop_btn1.addEventListener('click', () => {
-
-        cropper1.getCroppedCanvas().toBlob((blob) => {
-            let fileInputElement1 = document.getElementById('imgFile1');
-            let file1 = new File([blob], img_data1.name, { type: "image/*", lastModified: new Date().getTime() });
-            let container1 = new DataTransfer();
-            container1.items.add(file1);
-            fileInputElement1.files = container1.files;
-            document.getElementById('image-1').src = URL.createObjectURL(fileInputElement1.files[0])
-            document.getElementById('screen1').style.display = 'none'
-            document.getElementById('crop-1').style.display = 'none'
-            document.getElementById("addbtn").disabled = false;
-        })
-    })
-
-})
-
-// ----------------
-
-const imagebox2 = document.getElementById('screen2')
-const crop_btn2 = document.getElementById('crop-2')
-const input2 = document.getElementById('imgFile2')
-document.getElementById("addbtn").disabled = false;
-
-
-input2.addEventListener('change', () => {
-    const img_data2 = input2.files[0]
-    const url2 = URL.createObjectURL(img_data2)
-    imagebox2.innerHTML = `<img src="${url2}" id="img2" style="width:100%;">`
-    const img2 = document.getElementById('img2')
-    document.getElementById("addbtn").disabled = true;
-    document.getElementById('screen2').style.display = 'block'
-    document.getElementById('crop-2').style.display = 'block'
-    document.getElementById('image-2').style.display = 'block'
-
-    const cropper2 = new Cropper(img2, {
-        autoCropArea: 1,
-        viewMode: 1,
-        scalable: false,
-        zoomable: false,
-        movable: false,
-        minCropBoxWidth: 50,
-        minCropBoxHeight: 50,
-        aspectRatio: 1 / 1,
-    })
-
-    crop_btn2.addEventListener('click', () => {
-
-        cropper2.getCroppedCanvas().toBlob((blob) => {
-            let fileInputElement2 = document.getElementById('imgFile2');
-            let file2 = new File([blob], img_data2.name, { type: "image/*", lastModified: new Date().getTime() });
-            let container2 = new DataTransfer();
-            container2.items.add(file2);
-            fileInputElement2.files = container2.files;
-            document.getElementById('image-2').src = URL.createObjectURL(fileInputElement2.files[0])
-            document.getElementById('screen2').style.display = 'none'
-            document.getElementById('crop-2').style.display = 'none'
-            document.getElementById("addbtn").disabled = false;
-        })
-    })
-
-})
+// router.get('/', async (req, res, next)=> {
+//     try {
+//       const perPage = 12;
+//       let pageNum;
+//       let skip;
+//       let productCount;
+//       let pages;
+//       pageNum = parseInt(req.query.page);
+//       console.log(typeof (pageNum))
+//       skip = (pageNum - 1) * perPage
+//       await productHelpers.getProductCount().then((count) => {
+//         productCount = count;
+//       })
+//       pages = Math.ceil(productCount / perPage)
+  
+//       Handlebars.registerHelper('ifCond', function (v1, v2, options) {
+//         if (v1 === v2) {
+//           return options.fn(this);
+//         }
+//         return options.inverse(this);
+//       });
+//       Handlebars.registerHelper('for', function (from, to, incr, block) {
+//         var accum = '';
+//         for (var i = from; i <= to; i += incr)
+//           accum += block.fn(i);
+//         return accum;
+//       });
+  
+//       let search = '';
+//       if (req.query.search) {
+//         search = req.query.search
+  
+//         productHelpers.getCategory().then((datacategory) => {
+//           productHelpers.getSearchProducts(search).then(async (products) => {
+//             if (req.session.user) {
+//               cartCount = await userHelpers.getCartCount(req.session.user._id)
+//               let user = req.session.user
+//               res.render('user/home-page', { products, admin: false, user, datacategory, cartCount });
+//             } else {
+//               res.render('user/home-page', { products, admin: false, datacategory });
+//             }
+//           })
+//         })
+//       } else {
+//         productHelpers.getBanner().then((banner) => {
+//           productHelpers.getCategory().then((datacategory) => {
+//             // let user=req.session.user
+//             productHelpers.getPaginatedProducts(skip, perPage).then(async (products) => {
+//               // productHelpers.getDiscountPercent().then(async(discountPercent)=>{
+//               let cartCount = null;
+//               if (req.session.user) {
+//                 console.log(products.length);
+//                 userHelpers.getWishlistProducts(req.session.user._id).then(async(data) => {
+//                   console.log(data);
+//                   console.log(data.length);
+//                   for (let i = 0; i < products.length; i++) {
+//                       for (let j = 0; j < data.length; j++) {
+//                           if (products[i]._id.toString() == data[j].item.toString()) {
+//                               products[i].isWishlisted = true;  
+//                         }
+//                       }
+//                   }
+//                   console.log(products);
+//                   cartCount = await userHelpers.getCartCount(req.session.user._id)
+//                   let user = req.session.user
+//                   res.render('user/home-page', { products, admin: false, user, datacategory, cartCount, totalDoc: productCount, currentPage: pageNum, pages: pages, banner }); 
+//                 }).catch((err)=>{
+//                   console.log(err);
+//                 })     
+//               } else {
+//                 res.render('user/home-page', { products, admin: false, datacategory, totalDoc: productCount, currentPage: pageNum, pages: pages, banner });
+//               }
+//               //  })
+//             })
+//           })
+//         })
+//       }
+//     } catch (err) {
+//       console.log(err + "error happened in home page");
+//       res.redirect('/error')
+//     }
+//   });
 
 
-getAllorders: () => {
-    return new Promise((resolve, reject) => {
-        db.get().collection(collection.ORDER_COLLECTION).find().toArray().then((orders) => {
-            resolve(orders)
-        })
-    })
-}
+
+//   getPaginatedProducts: (skip, limit) => {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             let products = await db.get().collection(collection.PRODUCT_COLLECTION).find({stock:{$gte:1}}).skip(skip).limit(limit).toArray()
+//             resolve(products.reverse())
+//         } catch (err) {
+//             console.log(err);
+//             reject(err)
+//         }
+//     })
+// }

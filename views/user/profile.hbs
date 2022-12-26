@@ -34,6 +34,59 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-p-3 mb-2 bg-secondary text-white" data-toggle="modal"
+                            data-target="#exampleModalLong">
+                            Wallet
+                        </button>
+                
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>Wallet Balance :₹{{wallet.amount}}</h4>
+                                        <table id="usertable" class="table mt-5">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">date</th>
+                                                    <th scope="col">status</th>
+                                                    <th scope="col">price</th>
+                                                    <th scope="col">credited</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each wallet.transactions}}
+                                                <tr>
+                                                    <td>{{this.transactionDate}}</td>
+                                                    <td>{{this.transactiondescription}}</td>
+                                                    <td>₹{{this.transactionsAmount}} </td>
+                                                    <td>{{this.type}} </td>
+                                                </tr>
+                                                {{/each}}
+                
+                                                <h3 class="text-danger font-weight-bold text-center">{{catErr}}</h3>
+                                            </tbody>
+                                        </table>
+                
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card mb-4 mb-lg-0">
                     <form>
                         <div class="accordion accordion-borderless" id="accordionFlushExampleX">
@@ -91,7 +144,8 @@
                                 <div class="mb-3">
                                     <label for="username">Firstname *</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="username" name="firstname" value="{{userDetails.Firstname}}" placeholder="" required>
+                                        <input type="text" class="form-control" id="firstname" name="firstname" value="{{userDetails.Firstname}}" placeholder=""
+                                            required>
                                         <div class="invalid-feedback" style="width: 100%;"> Your
                                             username is
                                             required.
@@ -101,7 +155,8 @@
                                 <div class="mb-3">
                                     <label for="username">Last name *</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="username" name="lastname"  value="{{userDetails.Lastname}}" placeholder="" required>
+                                        <input type="text" class="form-control" id="lastname" name="lastname" value="{{userDetails.Lastname}}" placeholder=""
+                                            required>
                                         <div class="invalid-feedback" style="width: 100%;"> Your
                                             username is
                                             required.
@@ -111,7 +166,7 @@
                                <div class="mb-3">
                                 <label for="username">phonenumber *</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="phone" value="{{userDetails.phonenumber}}" name="number" placeholder=""
+                                    <input type="number" class="form-control" id="number" value="{{userDetails.phonenumber}}" name="number" placeholder=""
                                         required>
                                     <div class="invalid-feedback" style="width: 100%;"> Your
                                         username is

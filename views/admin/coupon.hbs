@@ -1,6 +1,9 @@
-<!-- ============================================================== -->
-<!-- Preloader - style you can find in spinners.css -->
-<!-- ============================================================== -->
+<style>
+    .vl {
+        border-left: 6px solid #2f323e;
+        height: auto;
+    }
+</style>
 <div class="preloader">
     <div class="lds-ripple">
         <div class="lds-pos"></div>
@@ -10,8 +13,10 @@
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
-<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
-    data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5"
+    data-sidebartype="full"
+    data-sidebar-position="absolute" data-header-position="absolute"
+    data-boxed-layout="full">
     <!-- ============================================================== -->
     <!-- Topbar header - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -25,13 +30,15 @@
                     <!-- Logo icon -->
                     <b class="logo-icon">
                         <!-- Dark Logo icon -->
-                        <img src="plugins/images/logo-icon.png" alt="homepage" />
+                        <img src="plugins/images/logo-icon.png" alt="homepage"
+                            />
                     </b>
                     <!--End Logo icon -->
                     <!-- Logo text -->
                     <span class="logo-text">
                         <!-- dark Logo text -->
-                        <img src="plugins/images/logo-text.png" alt="homepage" />
+                        <img src="plugins/images/logo-text.png" alt="homepage"
+                            />
                     </span>
                 </a>
                 <!-- ============================================================== -->
@@ -40,16 +47,19 @@
                 <!-- ============================================================== -->
                 <!-- toggle and nav items -->
                 <!-- ============================================================== -->
-                <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none" href="javascript:void(0)"><i
+                <a class="nav-toggler waves-effect waves-light text-dark d-block
+                    d-md-none" href="javascript:void(0)"><i
                         class="ti-menu ti-close"></i></a>
             </div>
             <!-- ============================================================== -->
             <!-- End Logo -->
             <!-- ============================================================== -->
-            <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+            <div class="navbar-collapse collapse" id="navbarSupportedContent"
+                data-navbarbg="skin5">
                 <ul class="navbar-nav d-none d-md-block d-lg-none">
                     <li class="nav-item">
-                        <a class="nav-toggler nav-link waves-effect waves-light text-white" href="javascript:void(0)"><i
+                        <a class="nav-toggler nav-link waves-effect waves-light
+                            text-white" href="javascript:void(0)"><i
                                 class="ti-menu ti-close"></i></a>
                     </li>
                 </ul>
@@ -62,8 +72,10 @@
                     <!-- Search -->
                     <!-- ============================================================== -->
                     <li class=" in">
-                        <form role="search" class="app-search d-none d-md-block me-3">
-                            <input type="text" placeholder="Search..." class="form-control mt-0">
+                        <form role="search" class="app-search d-none d-md-block
+                            me-3">
+                            <input type="text" placeholder="Search..."
+                                class="form-control mt-0">
                             <a href="" class="active">
                                 <i class="fa fa-search"></i>
                             </a>
@@ -74,7 +86,8 @@
                     <!-- ============================================================== -->
                     <li>
                         <a class="profile-pic" href="#">
-                            <img src="/images/header.jpg" alt="user-img" width="36" class="img-circle"><span
+                            <img src="/images/header.jpg" alt="user-img"
+                                width="36" class="img-circle"><span
                                 class="text-white font-medium">Nihal Noushad</span></a>
                     </li>
                     <!-- ============================================================== -->
@@ -98,49 +111,56 @@
                 <ul id="sidebarnav">
                     <!-- User Profile-->
                     <li class="sidebar-item pt-2">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/"
+                        <a class="sidebar-link waves-effect waves-dark
+                            sidebar-link" href="/admin/"
                             aria-expanded="false">
                             <i class="far fa-clock" aria-hidden="true"></i>
                             <span class="hide-menu">Dashboard</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/addproduct"
+                        <a class="sidebar-link waves-effect waves-dark
+                            sidebar-link" href="/admin/products"
                             aria-expanded="false">
                             <i class="fa fa-table" aria-hidden="true"></i>
                             <span class="hide-menu">Add Products</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/all-users"
+                        <a class="sidebar-link waves-effect waves-dark
+                            sidebar-link" href="/admin/all-users"
                             aria-expanded="false">
                             <i class="fa fa-user" aria-hidden="true"></i>
                             <span class="hide-menu">Users</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/vieworders"
+                        <a class="sidebar-link waves-effect waves-dark
+                            sidebar-link" href="/admin/vieworders"
                             aria-expanded="false">
                             <i class="fa fa-font" aria-hidden="true"></i>
                             <span class="hide-menu">Orders</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/category"
+                        <a class="sidebar-link waves-effect waves-dark
+                            sidebar-link" href="/admin/category"
                             aria-expanded="false">
                             <i class="fa fa-table" aria-hidden="true"></i>
                             <span class="hide-menu">Categories</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/coupon"
+                        <a class="sidebar-link waves-effect waves-dark
+                            sidebar-link" href="/admin/coupon"
                             aria-expanded="false">
                             <i class="fa fa-columns" aria-hidden="true"></i>
                             <span class="hide-menu">Coupons</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/offer"
+                        <a class="sidebar-link waves-effect waves-dark
+                            sidebar-link" href="/admin/offer"
                             aria-expanded="false">
                             <i class="fa fa-globe" aria-hidden="true"></i>
                             <span class="hide-menu">Offers</span>
@@ -148,7 +168,8 @@
                     </li>
 
                     <li class="text-center p-20 upgrade-btn">
-                        <a href="/admin/adminlogout" class="btn d-grid btn-danger text-white">
+                        <a href="/admin/adminlogout" class="btn d-grid
+                            btn-danger text-white">
                             Logout</a>
                     </li>
                 </ul>
@@ -164,23 +185,25 @@
     <!-- ============================================================== -->
     <!-- Page wrapper  -->
     <!-- ============================================================== -->
-    <div class="page-wrapper">
+    <div class="page-wrapper" style="min-height: 250px;">
         <!-- ============================================================== -->
         <!-- Bread crumb and right sidebar toggle -->
         <!-- ============================================================== -->
         <div class="page-breadcrumb bg-white">
             <div class="row align-items-center">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                    <h4 class="page-title">Products</h4>
+                    <h4 class="page-title">Offers</h4>
                 </div>
                 <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
                     <div class="d-md-flex">
                         <ol class="breadcrumb ms-auto">
-                            {{!-- <li><a href="#" class="fw-normal">Dashboard</a></li> --}}
+                            <li><a href="#" class="fw-normal"></a></li>
                         </ol>
-                        <a href="/admin/addproduct"
-                            class="btn btn-danger  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white">Add
-                            products</a>
+                        <a href="/admin/category"
+                            class="btn btn-danger d-none d-md-block pull-right
+                            ms-3 hidden-xs hidden-sm waves-effect waves-light
+                            text-white">
+                            Category</a>
                     </div>
                 </div>
             </div>
@@ -193,62 +216,118 @@
         <!-- Container fluid  -->
         <!-- ============================================================== -->
         <div class="container-fluid">
-            <!-- ============================================================== -->
-            <!-- Start Page Content -->
-            <!-- ============================================================== -->
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="white-box">
-                        <h3 class="box-title">Product Table</h3>
-                        {{!-- <p class="text-muted">Add class <code>.table</code></p> --}}
-                        <div class="table-responsive">
-                            <table class="table text-nowrap">
-                                <thead>
-                                    <tr>
-                                        <th class="border-top-0">#</th>
-                                        <th class="border-top-0">productName</th>
-                                        <th class="border-top-0">category</th>
-                                        <th class="border-top-0">price</th>
-                                        <th class="border-top-0">description</th>
-                                        <th class="border-top-0">stock</th>
-                                        <th class="border-top-0">image</th>
-                                        <th class="border-top-0">options</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{#each products}}
-                                    <tr>
-                                        <td><span class="create_index"></span></td>
-                                        <td>{{this.productName}}</td>
-                                        <td>{{this.categoryName}}</td>
-                                        <td>{{this.price}}</td>
-                                        <td>{{this.description}}</td>
-                                        <td>{{this.stock}}</td>
-                                        <td><img style="width: 50px;" src="/admin/productimage/{{this._id}}.jpg" alt="">
-                                        </td>
-                                        <td><a href="/admin/edit-product/{{this._id}}" class="btn btn-primary">Edit</a>
-                                            <a href="/admin/delete-product/{{this._id}}" class="btn btn-danger"
-                                                onclick="return confirm('Do you want to delete {{this.name}} ?') ">Delete</a>
-                                        </td>
-                                    </tr>
-                                    {{/each}}
 
-                                </tbody>
-                            </table>
+            <hr
+                style="height:2px;border-width:0;color:gray;background-color:#2f323e">
+            <h2 class="text-center" style="font-family: sans-serif;">Product
+                Offer</h2>
+            <div class="col-lg-12 ">
+                <form action="/admin/addCoupon" method="post">
+                    <label for="couponName">Coupon Name *</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="couponName"
+                            name="couponName" placeholder=""
+                            required>
+                        <div class="invalid-feedback" style="width: 100%;"> Your
+                            username is
+                            required.
+                        </div>
+                    </div>
+
+                    <label for="couponOfferper">Coupon Offer Percentage *</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control"
+                            id="couponOfferper" name="couponOfferper"
+                            placeholder=""
+                            required>
+                        <div class="invalid-feedback" style="width: 100%;"> Your
+                            username is
+                            required.
+                        </div>
+                    </div>
+
+                    <label for="min">Minimum Amount *</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="min"
+                            name="min" placeholder=""
+                            required>
+                        <div class="invalid-feedback" style="width: 100%;"> Your
+                            username is
+                            required.
+                        </div>
+                    </div>
+                    <label for="max">Maximum Amount</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="max"
+                            name="max" placeholder=""
+                            required>
+                        <div class="invalid-feedback" style="width: 100%;"> Your
+                            username is
+                            required.
+                        </div>
+                    </div>
+                    <label for="couponOfferdesc">Coupon Offer description</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control"
+                            id="couponOfferdesc" name="couponOfferdesc"
+                            placeholder=""
+                            required>
+                        <div class="invalid-feedback" style="width: 100%;"> Your
+                            username is
+                            required.
+                        </div>
+                    </div>
+
+                    <h4 class="text-danger font-weight-bold "> {{couponErr}}</h4>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-success ml-auto
+                            mt-3">Add Coupon</button>
+                    </div>
+
+                </form>
+            </div>
+            <hr
+                style="height:2px;border-width:0;color:gray;background-color:#2f323e">
+            <div class="col-lg-12 ">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="white-box">
+                            <h3 class="box-title">Products</h3>
+                            <div class="table-responsive">
+                                <table class="table text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0">No.</th>
+                                            <th class="border-top-0">couponName</th>
+                                            <th class="border-top-0">CouponOffer</th>
+                                            <th class="border-top-0">Description</th>
+                                            <th class="border-top-0">Options</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each coupon}}
+                                        <tr>
+                                            <td><span class="create_index2"></span></td>
+                                            <td>{{this.couponName}}</td>
+                                            <td>{{this.couponOfferper}}%</td>
+                                            <td>{{this.couponOfferdesc}}</td>
+                                            <td class="remove-pr">
+
+                                                <button type="button" class="btn
+                                                    btn-danger"
+                                                    onclick="
+                                                    deleteCoupon('{{this._id}}')">Remove</button>
+                                            </td>
+
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ============================================================== -->
-            <!-- End PAge Content -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Right sidebar -->
-            <!-- ============================================================== -->
-            <!-- .right-sidebar -->
-            <!-- ============================================================== -->
-            <!-- End Right sidebar -->
-            <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
@@ -256,7 +335,8 @@
         <!-- ============================================================== -->
         <!-- footer -->
         <!-- ============================================================== -->
-        <footer class="footer text-center"> 2021 © Ample Admin brought to you by <a
+        <footer class="footer text-center"> 2021 © Ample Admin brought to you by
+            <a
                 href="https://www.wrappixel.com/">wrappixel.com</a>
         </footer>
         <!-- ============================================================== -->
@@ -269,8 +349,27 @@
 </div>
 
 <script>
-    var divs = document.querySelectorAll('.create_index');
-    for (var i = 0; i < divs.length; ++i) {
-        divs[i].innerHTML = i + 1;
+    var divs1 = document.querySelectorAll('.create_index2');
+    for (var i = 0; i < divs1.length; ++i) {
+        divs1[i].innerHTML = i + 1;
     }
+</script>
+<script>
+function deleteCoupon(couponId){
+    console.log('hey copon',couponId)
+    $.ajax({
+        url:'/admin/deleteCoupon',
+        data:{
+            couponId
+        },
+        method:'post',
+        success:(response)=>{
+            if(response.removeCoupon){
+location.reload()
+            }
+            
+        }
+    })
+}
+
 </script>

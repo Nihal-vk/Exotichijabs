@@ -4,6 +4,9 @@ var objectId = require('mongodb').ObjectId
 
 module.exports = {
 
+
+    // ============================= User ======================
+
     blockUser: (userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, { $set: { isBlocked: true } }).then(() => {
@@ -22,6 +25,15 @@ module.exports = {
         })
 
     },
+
+    totalusers: () => {
+        return new Promise(async (resolve, reject) => {
+            let totalusers = await db.get().collection(collection.USER_COLLECTION).count()
+            resolve(totalusers)
+        })
+    },
+
+    // ============================= Orders ======================
 
     getAllorders: () => {
         return new Promise((resolve, reject) => {
@@ -59,6 +71,15 @@ module.exports = {
         })
     },
 
+    totalorders: () => {
+        return new Promise(async (resolve, reject) => {
+            let totalOrders = await db.get().collection(collection.ORDER_COLLECTION).count()
+            resolve(totalOrders)
+        })
+    },
+
+// ============================= Change status======================
+
     changeStatus: (orderId) => {
         console.log(orderId);
         return new Promise((resolve, reject) => {
@@ -69,19 +90,7 @@ module.exports = {
         })
     },
 
-    totalorders: () => {
-        return new Promise(async (resolve, reject) => {
-            let totalOrders = await db.get().collection(collection.ORDER_COLLECTION).count()
-            resolve(totalOrders)
-        })
-    },
-
-    totalusers: () => {
-        return new Promise(async (resolve, reject) => {
-            let totalusers = await db.get().collection(collection.USER_COLLECTION).count()
-            resolve(totalusers)
-        })
-    },
+// ============================= Sale ======================
 
     totalsale: () => {
         return new Promise(async (resolve, reject) => {
@@ -117,7 +126,7 @@ module.exports = {
 
             ]).toArray()
             console.log(placed, 'hey placed');
-            statuses.placedNo = placed[0].count
+            statuses.placedNo = placed[0]?.count
 
             let delivered = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
@@ -131,7 +140,7 @@ module.exports = {
                 }
             ]).toArray()
             console.log(delivered, 'hey delivery');
-            statuses.deliveredNo = delivered[0].count
+            statuses.deliveredNo = delivered[0]?.count
             // delivered[0] ? statuses.deliveredNo = delivered[0] : 0;
 
             let shipped = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
@@ -146,7 +155,7 @@ module.exports = {
 
             ]).toArray()
             console.log(shipped, "hey shipped");
-            statuses.shippedNo = shipped[0].count
+            statuses.shippedNo = shipped[0]?.count
             // shipped[0] ? statuses.shippedNo = shipped[0] : 0;
 
             let cancelled = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
@@ -160,7 +169,7 @@ module.exports = {
                 }
             ]).toArray()
             console.log(cancelled);
-            statuses.cancelledNo = cancelled[0].count
+            statuses.cancelledNo = cancelled[0]?.count
 
             console.log(statuses);
             resolve(statuses)
@@ -287,3 +296,5 @@ module.exports = {
     }
 
 }
+
+//=====================================================================//
