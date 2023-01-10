@@ -5,15 +5,18 @@ const { ReturnDocument } = require('mongodb')
 var objectId = require('mongodb').ObjectId
 
 module.exports = {
-    // ============================= product ======================
+    // ============================= product ======================  //
 
     addProduct: (product) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
-                // console.log(data.insertedId)
-                resolve(data.insertedId)
-            })
-
+            try{
+                db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
+                    // console.log(data.insertedId)
+                    resolve(data.insertedId)
+                })
+            }catch(err){
+                console.log(err);
+            }
         })
     },
 
@@ -49,8 +52,22 @@ module.exports = {
         })
     },
 
+    getProductCount:()=>{
+      return new Promise(async(resolve, reject) => {
+        let count = await db.get().collection(collection.PRODUCT_COLLECTION).countDocuments()
+        resolve(count)
+      })
+    },
 
-    // ============================= Users ======================
+    getPaginatedProducts:(skip,limit)=>{
+     return new Promise(async(resolve, reject) => {
+        let products = await db.get().collection(collection.PRODUCT_COLLECTION).find().skip(skip).limit(limit).toArray()
+            resolve(products)
+     })
+    },
+
+
+    // ============================= Users ====================== //
 
     getAllUsers: () => {
         return new Promise(async (resolve, reject) => {
@@ -59,7 +76,7 @@ module.exports = {
         })
     },
 
-    // ============================= Category ======================
+    // ============================= Category ====================== //
 
     addCategory: (category) => {
         return new Promise(async (resolve, reject) => {
@@ -124,7 +141,7 @@ module.exports = {
         })
     },
 
-    // ============================= Offer ======================
+    // ============================= Offer ====================== //
 
     CreateCatOffer: (offerDetails) => {
         return new Promise(async (resolve, reject) => {
@@ -222,7 +239,7 @@ module.exports = {
     },
 
 
-    // ============================= Coupon ======================
+    // ============================= Coupon ======================  //
 
     addCoupon: (couponDetails) => {
         return new Promise(async (resolve, reject) => {

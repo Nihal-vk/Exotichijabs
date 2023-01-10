@@ -94,3 +94,76 @@
 //         }
 //     })
 // }
+
+
+// Get Otp login Page
+router.get('/otp-page', (req, res) => {
+  req.session.otpSended = true;
+  res.render('user/otp-page', { otpSended: req.session.otpSended })
+})
+
+//POST Send Otp To Twilio 
+router.post('/sendotp', (req, res) => {
+  console.log(req.body);
+  userHelpers.checkUser(req.body).then((response) => {
+    console.log(response);
+    if (response.user) {
+      let ph_no = (`+91${req.body.number}`)
+      req.session.number = ph_no;
+      client.verify.v2.services('VA4c79484d8cc30 SID')
+        .verifications
+        .create({ to: ph_no, channel: 'sms' })
+        .then(verification => {
+          console.log(verification.status)
+          //  req.session.preuser=response.user
+          req.session.user = response.user
+          res.render('user/otp-page', { otpSend: true })
+        })
+    } else {
+      res.render('user/otp-page', { noaccount: true })
+    }
+  })
+})
+
+router.post('/verifyotp', (req, res) => {
+  // console.log(`session phone number is ${req.session.phonenumber} and otp is ${req.body}`);
+  console.log(req.session.number);
+  let ph_no = req.session.number
+  let otp = req.body.otp
+  client.verify.v2.services('VA4c79484d8c15cb91629c185adacb4c30')
+    .verificationChecks
+    .create({ to: ph_no, code: otp })
+    .then(verification_check => {
+      console.log(verification_check.status)
+      if (verification_check.status == 'approved') {
+        // user=req.session.user
+        // console.log('lo');
+        // req.session.user=req.session.preuser
+
+        res.redirect('/home')
+      } else {
+        res.render('user/otp-page', { otpErr: true })
+      }
+    });
+
+})
+
+
+
+checkUser: (userData) => {
+        let response = {}
+        return new Promise(async (resolve, reject) => {
+            let user = await db.get().collection(collection.USER_COLLECTIONS).findOne({ number: userData.number })
+            if (user) {
+                console.log(`user is ${user}`);
+                response.user = user
+                resolve(response)
+            } else {
+                console.log("user not found");
+                resolve(response)
+            }
+        })
+    }
+
+
+   

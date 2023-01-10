@@ -2,10 +2,10 @@ var db = require('../config/connection')
 var collection = require('../config/collection')
 var objectId = require('mongodb').ObjectId
 
-module.exports = {
+    module.exports = {
 
 
-    // ============================= User ======================
+    // ============================= User ====================== //
 
     blockUser: (userId) => {
         return new Promise((resolve, reject) => {
@@ -33,14 +33,23 @@ module.exports = {
         })
     },
 
-    // ============================= Orders ======================
+    // ============================= Orders ====================== //
 
-    getAllorders: () => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.ORDER_COLLECTION).find().toArray().then((orders) => {
-                resolve(orders)
-            })
+    // getAllorders: () => {
+    //     return new Promise((resolve, reject) => {
+    //         db.get().collection(collection.ORDER_COLLECTION).find().toArray().then((orders) => {
+    //             resolve(orders)
+    //         })
+    //     })
+    // },
+
+    getPaginatedOrders:(limit, skip)=>{
+        return new Promise(async (resolve, reject) => {
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).find().skip(skip).limit(limit).toArray()
+            // let slicedOrders=orders.slice
+            resolve(orders)
         })
+
     },
 
     getOrderuser: (userId) => {
@@ -78,7 +87,7 @@ module.exports = {
         })
     },
 
-// ============================= Change status======================
+// ============================= Change status ====================== //
 
     changeStatus: (orderId) => {
         console.log(orderId);
@@ -90,7 +99,7 @@ module.exports = {
         })
     },
 
-// ============================= Sale ======================
+// ============================= Sale ======================  //
 
     totalsale: () => {
         return new Promise(async (resolve, reject) => {
@@ -127,6 +136,7 @@ module.exports = {
             ]).toArray()
             console.log(placed, 'hey placed');
             statuses.placedNo = placed[0]?.count
+            console.log('plz be readr',statuses.placedNo);
 
             let delivered = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
@@ -168,10 +178,10 @@ module.exports = {
                     $group: { _id: { months3: { $month: { $toDate: "$date" } } }, count: { $sum: 1 } }
                 }
             ]).toArray()
-            console.log(cancelled);
+            console.log(cancelled,'o');
             statuses.cancelledNo = cancelled[0]?.count
 
-            console.log(statuses);
+            console.log(statuses,'wht happm');
             resolve(statuses)
         })
     },
@@ -293,7 +303,58 @@ module.exports = {
 
             })
         })
+    },
+
+
+    // ============================= Banner ======================  //
+
+    addBanner:(details)=>{
+        details.isDeactivated=false;
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.BANNER_COLLECTION).insertOne(details).then((data)=>{
+                resolve(data.insertedId)
+            })
+        })
+    },
+
+    getAllbanners:()=>{
+        return new Promise(async(resolve, reject) => {
+            let banner=await db.get().collection(collection.BANNER_COLLECTION).find().toArray()
+            resolve(banner)
+        })
+    },
+
+    deactiveBanner:(bannerId)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.BANNER_COLLECTION).updateOne({_id:objectId(bannerId)},{
+                $set:{
+                    isDeactivated:true
+                }
+            }).then(()=>{
+                resolve()
+            })
+        })
+    },
+
+    activeBanner:(bannerId)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.BANNER_COLLECTION).updateOne({_id:objectId(bannerId)},{
+                $set:{
+                    isDeactivated:false
+                }
+            }).then(()=>{
+                resolve()
+            })
+        })
+    },
+
+    getActiveBanner:()=>{
+        return new Promise(async(resolve, reject) => {
+            banner=await db.get().collection(collection.BANNER_COLLECTION).find({isDeactivated:false}).toArray()
+            resolve(banner)
+        })
     }
+
 
 }
 

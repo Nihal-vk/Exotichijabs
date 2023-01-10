@@ -146,6 +146,14 @@
                             <span class="hide-menu">Offers</span>
                         </a>
                     </li>
+                     <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/banner"
+                            aria-expanded="false">
+                            <i class="fa fa-globe" aria-hidden="true"></i>
+                            <span class="hide-menu">Banners</span>
+                        </a>
+                    </li>
+
 
                     <li class="text-center p-20 upgrade-btn">
                         <a href="/admin/adminlogout" class="btn d-grid btn-danger text-white">
@@ -236,6 +244,22 @@
                                 </tbody>
                             </table>
                         </div>
+                        <nav aria-label="...">
+                            <ul class="pagination mt-4">
+                                <li class="page-item disabled">
+                                    <a class="page-link">Prev</a>
+                                </li>
+                                {{#for 1 pages 1}}
+                                <li class="page-item{{#ifCond this ../currentPage}} active {{/ifCond}}">
+                                    <a class="page-link " href="/admin/products?page={{this}}">{{this}}</a>
+                                </li>
+                                {{/for}}
+                        
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

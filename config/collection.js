@@ -7,7 +7,8 @@ module.exports = {
     WISHLIST_COLLECTION: 'wishlist',
     OFFER_COLLECTION: 'offer',
     COUPON_COLLECTION: 'coupon',
-    WALLET_COLLECTION:'wallet'
+    WALLET_COLLECTION:'wallet',
+    BANNER_COLLECTION:'banner'
 }
 
 

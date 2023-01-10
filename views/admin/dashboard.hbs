@@ -141,6 +141,14 @@
                             <span class="hide-menu">Offers</span>
                         </a>
                     </li>
+                     <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/banner"
+                            aria-expanded="false">
+                            <i class="fa fa-globe" aria-hidden="true"></i>
+                            <span class="hide-menu">Banners</span>
+                        </a>
+                    </li>
+
 
                     <li class="text-center p-20 upgrade-btn">
                         <a href="/admin/adminlogout" class="btn d-grid btn-danger text-white">
@@ -561,26 +569,26 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('myChart1');
+  const ctx = document.getElementById('myChart1');
 
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Placed', 'Shipped', 'Delivered', 'Canncelled'],
-            datasets: [{
-                label: '# Delivery Status',
-                data: [{{ deliveredStatus.placedNo }}, {{ deliveredStatus.shippedNo }}, {{ deliveredStatus.deliveredNo }}, {{ deliveredStatus.cancelledNo }}],
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Placed', 'Shipped', 'Delivered', 'Canncelled'],
+      datasets: [{
+        label: '# of Votes',
+        data: [{{deliveredStatus.placedNo}},{{deliveredStatus.shippedNo}},{{deliveredStatus.deliveredNo}},{{deliveredStatus.cancelledNo}}],
         borderWidth: 1
-        }]
+      }]
     },
-        options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
         }
+      }
     }
-    });
+  });
 </script>
 
 

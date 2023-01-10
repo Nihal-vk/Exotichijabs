@@ -1,0 +1,76 @@
+<!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Shop</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Shop</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+
+
+<!-- Start Products  -->
+<div class="products-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="title-all text-center">
+                    <h1>Featured Products</h1>
+                    <p>You only get the best when you shop with the best !</p>
+                </div>
+            </div>
+        </div>
+        {{!-- <div class="row">
+            <div class="col-lg-12">
+                <div class="special-menu text-center">
+                    <div class="button-group filter-button-group">
+                        <button class="active" data-filter="*">All</button>
+                        <button data-filter=".top-featured">Top featured</button>
+                        <button data-filter=".best-seller">Best seller</button>
+                    </div>
+                </div>
+            </div>
+        </div> --}}
+
+        <div class="row special-list">
+            {{#each products}}
+            <div class="col-lg-3 col-md-6 special-grid best-seller">
+                <div class="products-single fix">
+                    <div class="box-img-hover">
+                        <div class="type-lb">
+                            <p class="sale">Sale</p>
+                        </div>
+                        <img src="/admin/productimage/{{this._id}}.jpg" style="width: 350px;height: 300px;"
+                            class="img-fluid" alt="Image">
+                        <div class="mask-icon">
+                            <ul>
+                                <li><a href="/productDetails/{{this._id}}" data-toggle="tooltip" data-placement="right"
+                                        title="View"><i class="fas fa-eye"></i></a></li>
+                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i
+                                            class="fas fa-sync-alt"></i></a></li>
+                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i
+                                            class="far fa-heart"></i></a></li>
+                            </ul>
+                            <a class="cart" href="#">Add to Cart</a>
+                        </div>
+                    </div>
+                    <div class="why-text">
+                        <h4>{{this.productName}}</h4>
+                        <h4>{{this.categoryName}}</h4>
+                        <h5 ><s>₹{{this.price}}.00</s></h5>
+                        <h5>{{this.MRP}}</h5>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+
+        </div>
+    </div>
+</div>
+<!-- End Products  -->

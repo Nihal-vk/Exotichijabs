@@ -98,6 +98,19 @@ module.exports = {
         })
     },
 
+
+    checkMobileNumber: (mobile) => {
+        return new Promise(async (resolve, reject) => {
+
+            await db.get().collection(collection.USER_COLLECTION).findOne({ phonenumber: mobile }).then((data) => {
+                resolve(data)
+                console.log(data)
+            }).catch(() => {
+                reject()
+            })
+        })
+    },
+
     // ============================= products ======================
     
     displayProducts: () => {
@@ -125,7 +138,7 @@ module.exports = {
 
     },
 
-    // ============================= Cart ======================
+    // ============================= Cart ====================== //
 
     addtoCart: (proID, userId) => {
         return new Promise(async (resolve, reject) => {
@@ -303,7 +316,7 @@ module.exports = {
 
     // ============================= CheckOut ======================
 
-    placeOrder: (order, address, products, total) => {
+    placeOrder: (order, address, products, total,userId) => {
         return new Promise(async (resolve, reject) => {
 
             let uniqueId = uuidv4();
@@ -329,6 +342,24 @@ module.exports = {
                 date: moment().format("MMM Do YY")
 
             }
+
+
+            let prod=await db.get().collection(collection.CART_COLLECTION).findOne({user:ObjectID(userId)},
+            {projection:{'products.item':true,'products.quantity':true}})
+
+                let prodArr=prod.products
+                prodArr.forEach(async(element)=>{
+                    let quant=element.quantity
+                    console.log(quant,'hey mekkle');
+                    await db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:ObjectID(element.item)},[
+                    {
+                        $set: { stock: { $subtract: ['$stock', quant] } }
+                    }
+                ])
+                    
+                })
+
+
             await db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
                 db.get().collection(collection.CART_COLLECTION).deleteOne({ user: ObjectID(order.userId) })
                 resolve(response.insertedId)
@@ -336,8 +367,10 @@ module.exports = {
         })
     },
 
+    
+
    
-    // ============================= Orders ======================
+    // ============================= Orders ====================== //
 
     getallOrders: (userId) => {
         return new Promise(async (resolve, reject) => {
@@ -379,7 +412,7 @@ module.exports = {
                 }
             ]).toArray()
 
-            resolve(orders)
+            resolve(orders.reverse())
         })
     },
 
@@ -436,6 +469,15 @@ module.exports = {
             })
       })
     },
+
+    getOrderCount:()=>{
+        return new Promise(async (resolve, reject) => {
+            let count = await db.get().collection(collection.ORDER_COLLECTION).countDocuments()
+            resolve(count)
+        })
+    },
+
+    
 
     // ============================= Address ======================
 
@@ -612,7 +654,7 @@ module.exports = {
     },
 
 
-    // ============================= Wish list ======================
+    // ============================= Wish list ======================  //
 
     addtoWishlist: (proID, userId) => {
         return new Promise(async (resolve, reject) => {
@@ -699,7 +741,39 @@ module.exports = {
         })
     },
 
-// ============================= Payment ======================
+    getWishlistId:(user)=>{
+      return new Promise(async(resolve, reject) => {
+        let wishListItems = await db.get().collection(collection.WISHLIST_COLLECTION).aggregate([
+            {
+                $match: { user: ObjectID(user) }
+            },
+            {
+                $unwind: '$products'
+            },
+            {
+                $project: {
+                    item: '$products.item',
+                    _id: 0
+
+                }
+            },
+            // {
+            //     $project: {
+            //         item: 1,
+            //     }
+            // }
+
+
+        ]).toArray()
+
+        finalArray = wishListItems.map(function (obj) {
+            return obj.item;
+        });
+        resolve(finalArray)
+      })
+    },
+
+// ============================= Payment ====================== //
 
     generateRazorpay: (orderId, totalprice) => {
         return new Promise((resolve, reject) => {

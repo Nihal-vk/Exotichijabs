@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row pb-5">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+            <form action="/confirm-otp" method="post">
+                <div class="form-group mt-5">
+                    <h1 class="d-flex justify-content-center font-weight-bold">Otp-login</h1>
+                    <label for="exampleInputEmail1 font-weight-bold">Enter
+                        OTP</label>
+                    <input type="number" class="form-control"
+                        name="otp" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="">
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary ">Submit</button>
+                </div>
+
+            </form>
+            <p class="text-danger font-weight-bold text-center">{{errOTP}}</p>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+</div>
