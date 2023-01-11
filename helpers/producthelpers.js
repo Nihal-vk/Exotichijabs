@@ -14,8 +14,10 @@ module.exports = {
                     // console.log(data.insertedId)
                     resolve(data.insertedId)
                 })
-            }catch(err){
-                console.log(err);
+            } catch(err) {
+
+                console.log(err),'hey';
+                reject(err)
             }
         })
     },

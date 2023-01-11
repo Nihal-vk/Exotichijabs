@@ -38,37 +38,45 @@ const Dbpassword = "12345";
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
-  if (req.session.loggedIn) {
-    let totalSale = await adminhelpers.totalsale()
-    let totalOrders = await adminhelpers.totalorders()
-    let totalUsers = await adminhelpers.totalusers()
-    let deliveredStatus = await adminhelpers.delStatus()
-    // let monthlySale = await adminhelpers.monthlySale()
-    let fetchMonths = await adminhelpers.fetchMonths()
-    let dailySale = await adminhelpers.dailySale()
-    let recentSale = await adminhelpers.recentSale()
-    // console.log(recentSale, 'hey reverse');
-    res.render('admin/dashboard', { admin: true, layout: "admin-layout", totalOrders, totalUsers,totalSale, deliveredStatus, fetchMonths, dailySale, recentSale });
-  } else {
-    res.render('admin/admin-login', { "AdminloginErr": req.session.logedErr })
-    req.session.logedErr = false
+  try {
+    if (req.session.loggedIn) {
+      let totalSale = await adminhelpers.totalsale()
+      let totalOrders = await adminhelpers.totalorders()
+      let totalUsers = await adminhelpers.totalusers()
+      let deliveredStatus = await adminhelpers.delStatus()
+      // let monthlySale = await adminhelpers.monthlySale()
+      let fetchMonths = await adminhelpers.fetchMonths()
+      let dailySale = await adminhelpers.dailySale()
+      let recentSale = await adminhelpers.recentSale()
+      // console.log(recentSale, 'hey reverse');
+      res.render('admin/dashboard', { admin: true, layout: "admin-layout", totalOrders, totalUsers, totalSale, deliveredStatus, fetchMonths, dailySale, recentSale });
+    } else {
+      res.render('admin/admin-login', { "AdminloginErr": req.session.logedErr })
+      req.session.logedErr = false
+    }
+  } catch (err) {
+    console.log('error in Login', err);
+    res.redirect('/admin/404')
   }
-
 });
 
 
 router.post('/', (req, res) => {
   const admindata = { adminemail, adminpassword } = req.body
+  try {
+    if (adminemail === Dbemail && adminpassword === Dbpassword) {
 
-  if (adminemail === Dbemail && adminpassword === Dbpassword) {
+      req.session.loggedIn = true
+      req.session.admin = admindata
+      res.redirect('/admin/')
 
-    req.session.loggedIn = true
-    req.session.admin = admindata
-    res.redirect('/admin/')
-
-  } else {
-    req.session.logedErr = true
-    res.redirect('/admin/')
+    } else {
+      req.session.logedErr = true
+      res.redirect('/admin/')
+    }
+  } catch (err) {
+    console.log('error in login', err);
+    res.redirect('/admin/404')
   }
 })
 
@@ -77,6 +85,13 @@ router.get('/adminlogout', (req, res) => {
   res.redirect('/admin')
 
 });
+
+
+// ============================= Error page  ====================== //
+
+router.get('/404',(req,res)=>{
+  res.render('admin/404',{ admin: true, layout: "admin-layout"})
+})
 
 // ============================= Product ====================== //
 
@@ -97,10 +112,10 @@ router.post('/addproduct',verifyAdmin, (req, res, next) => {
   
     producthelpers.addProduct(productData).then(async (id) => {
   
-      let category = await producthelpers.GetallCategory(req.body)
-      let image = req.files.image
-      let image2 = req.files.image2
-      let image3 = req.files.image3
+      // let category = await producthelpers.GetallCategory(req.body)
+      let image = req?.files?.image
+      let image2 = req?.files?.image2
+      let image3 = req?.files?.image3
       image.mv('./public/admin/productimage/' + id + '.jpg')
       image2.mv('./public/admin/productimage/' + id + '2.jpg')
       image3.mv('./public/admin/productimage/' + id + '3.jpg', (err, done) => {
@@ -108,28 +123,29 @@ router.post('/addproduct',verifyAdmin, (req, res, next) => {
           res.redirect('/admin/addproduct')
         } else {
           console.log(err);
+          console.log('kkkkk');
+          res.redirect('/admin/404')
         }
       })
-  
+    }).catch((err)=>{
+      console.log('error in add image',err);
+      res.redirect('/admin/404')
     })
    } catch (err) {
-    console.log('error in add imaegge',err);
-    res.redirect('/admin/err')
+    console.log('error in add image',err);
+    res.redirect('/admin/404')
   }
 });
 
 
-router.get('/err',(req,res)=>{
-  res.render('user/err')
-})
 
-router.get('/products',verifyAdmin,async (req, res) => {
+router.get('/products', verifyAdmin, async (req, res) => {
   const perPage = 10;
   let pageNum;
   let skip;
   let productCount;
   let pages;
-  pageNum = parseInt(req.query.page)>=1?parseInt(req.query.page):1;
+  pageNum = parseInt(req.query.page) >= 1 ? parseInt(req.query.page) : 1;
   skip = (pageNum - 1) * perPage
   await producthelpers.getProductCount().then((count) => {
     productCount = count;
@@ -148,27 +164,40 @@ router.get('/products',verifyAdmin,async (req, res) => {
       accum += block.fn(i);
     return accum;
   });
-  let index=parseInt(skip)>=1?skip+1:1
-  Handlebars.registerHelper("inc", function(value, options)
-  { 
-      return parseInt(value) + index;
+  let index = parseInt(skip) >= 1 ? skip + 1 : 1
+  Handlebars.registerHelper("inc", function (value, options) {
+    return parseInt(value) + index;
   });
 
+  try {
+    producthelpers.getPaginatedProducts(skip, perPage).then((products) => {
+      res.render('admin/products', { admin: true, layout: "admin-layout", products, totalDoc: productCount, currentPage: pageNum, pages: pages })
 
-  producthelpers.getPaginatedProducts(skip, perPage).then((products) => {
-    res.render('admin/products', { admin: true, layout: "admin-layout", products,totalDoc: productCount, currentPage: pageNum, pages: pages })
-
-  })
-
+    }).catch((err) => {
+      console.log('error in viewproduct', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in view product', err);
+    res.redirect('/admin/404')
+  }
 });
 
 
-router.get('/delete-product/:id',verifyAdmin, (req, res) => {
+router.get('/delete-product/:id', verifyAdmin, (req, res) => {
   let proId = req.params.id
-  producthelpers.deleteProducts(proId)
-    .then((response) => {
-      res.redirect('/admin/products')
-    })
+  try {
+    producthelpers.deleteProducts(proId)
+      .then((response) => {
+        res.redirect('/admin/products')
+      }).catch((err) => {
+        console.log('error in delete product', err);
+        res.redirect('/admin/404')
+      })
+  } catch {
+    console.log('error in delete product', err);
+    res.redirect('/admin/404')
+  }
 });
 
 router.get('/edit-product/:id',verifyAdmin, async (req, res) => {
@@ -179,58 +208,83 @@ router.get('/edit-product/:id',verifyAdmin, async (req, res) => {
 });
 
 
-router.post('/edit-product/:id',verifyAdmin, (req, res) => {
+router.post('/edit-product/:id', verifyAdmin, (req, res) => {
   req.body.price = parseInt(req.body.price)
   req.body.stock = parseInt(req.body.stock)
   let id = req.params.id
-  producthelpers.updateProducts(req.params.id, req.body).then(() => {
-    let image = req.files?.image
-    let image2 = req.files?.image2
-    let image3 = req.files?.image3
-    res.redirect('/admin/products')
-    if (image) {
-      image.mv('./public/admin/productimage/' + id + '.jpg')
-    } if (image2) {
-      image2.mv('./public/admin/productimage/' + id + '2.jpg')
-    } if (image3) {
-      image3.mv('./public/admin/productimage/' + id + '3.jpg')
-    }
-  })
+  try {
+    producthelpers.updateProducts(req.params.id, req.body).then(() => {
+      let image = req.files?.image
+      let image2 = req.files?.image2
+      let image3 = req.files?.image3
+      res.redirect('/admin/products')
+      if (image) {
+        image.mv('./public/admin/productimage/' + id + '.jpg')
+      } if (image2) {
+        image2.mv('./public/admin/productimage/' + id + '2.jpg')
+      } if (image3) {
+        image3.mv('./public/admin/productimage/' + id + '3.jpg')
+      }
+    }).catch((err) => {
+      console.log('error in edit image', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in edit image', err);
+    res.redirect('/admin/404')
+  }
 });
 
 
 // ============================= Category ====================== //
 
-router.get('/category',verifyAdmin, (req, res) => {
-  producthelpers.GetallCategory().then((category) => {
-    console.log(category);
-    res.render('admin/category', { admin: true, layout: "admin-layout", category, catErr: req.session.catErr })
-    req.session.catErr = null
-  })
-
+router.get('/category', verifyAdmin, (req, res) => {
+  try {
+    producthelpers.GetallCategory().then((category) => {
+      console.log(category);
+      res.render('admin/category', { admin: true, layout: "admin-layout", category, catErr: req.session.catErr })
+      req.session.catErr = null
+    }).catch((err) => {
+      console.log('error in view category', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in view category', err);
+    res.redirect('/admin/404')
+  }
 });
 
-router.get('/addcategory', verifyAdmin,(req, res) => {
+router.get('/addcategory', verifyAdmin, (req, res) => {
   res.render('admin/add-category', { admin: true, layout: "admin-layout", "Errcategory": req.session.Errcategory })
   req.session.Errcategory = false
 });
 
-router.post('/addcategory',verifyAdmin, (req, res) => {
-  producthelpers.addCategory(req.body).then(() => {
-    res.redirect('/admin/category')
-  }).catch((error) => {
-    req.session.Errcategory = true
-    res.redirect('/admin/addcategory')
-  })
+router.post('/addcategory', verifyAdmin, (req, res) => {
+  try {
+    producthelpers.addCategory(req.body).then(() => {
+      res.redirect('/admin/category')
+    }).catch((error) => {
+      req.session.Errcategory = true
+      res.redirect('/admin/addcategory')
+    })
+  } catch(err) {
+    console.log('error in add category', err);
+    res.redirect('/admin/404')
+  }
 });
 
-router.get('/delete-Category/:id',verifyAdmin, (req, res) => {
-  producthelpers.deleteCategory(req.params.id).then(() => {
-    res.redirect('/admin/category')
-  }).catch((error) => {
-    req.session.catErr = error
-    res.redirect('/admin/category')
-  })
+router.get('/delete-Category/:id', verifyAdmin, (req, res) => {
+  try {
+    producthelpers.deleteCategory(req.params.id).then(() => {
+      res.redirect('/admin/category')
+    }).catch((error) => {
+      req.session.catErr = error
+      res.redirect('/admin/category')
+    })
+  } catch (err) {
+    console.log('error in delete catgeory', err);
+    res.redirect('/admin/404')
+  }
 })
 
 
@@ -240,18 +294,31 @@ router.get('/edit-Category/:id',verifyAdmin, async (req, res) => {
 })
 
 router.post('/edit-Category/:id', (req, res) => {
-  producthelpers.updateCategory(req.params.id, req.body).then(() => {
-    res.redirect('/admin/category')
-  })
+  try {
+    producthelpers.updateCategory(req.params.id, req.body).then(() => {
+      res.redirect('/admin/category')
+    })
+  } catch (err) {
+    console.log('error in edit category', err);
+    res.redirect('/admin/404')
+  }
 })
 
 // ============================= User details ====================== //
 
-router.get('/all-users',verifyAdmin, (req, res) => {
-  producthelpers.getAllUsers().then((users) => {
-    console.log(users);
-    res.render('admin/view-user', { admin: true, layout: "admin-layout", users })
-  })
+router.get('/all-users', verifyAdmin, (req, res) => {
+  try {
+    producthelpers.getAllUsers().then((users) => {
+      console.log(users);
+      res.render('admin/view-user', { admin: true, layout: "admin-layout", users })
+    }).catch((err) => {
+      console.log('error in users', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in users', err);
+    res.redirect('/admin/404')
+  }
 });
 
 
@@ -269,23 +336,22 @@ router.get('/Unblock-User/:id', (req, res) => {
 
 // ============================= Orders ====================== //
 
-router.get('/vieworders',verifyAdmin, async (req, res) => {
+router.get('/vieworders', verifyAdmin, async (req, res) => {
   const perPage = 5;
   let pageNum;
   let skip;
   let productCount;
   let pages;
-  pageNum = parseInt(req.query.page)>=1?parseInt(req.query.page):1;
+  pageNum = parseInt(req.query.page) >= 1 ? parseInt(req.query.page) : 1;
   skip = (pageNum - 1) * perPage
   await userhelpers.getOrderCount().then((count) => {
     productCount = count;
   })
   pages = Math.ceil(productCount / perPage)
-let index=parseInt(skip)>=1?skip+1:1
-Handlebars.registerHelper("inc", function(value, options)
-{ 
+  let index = parseInt(skip) >= 1 ? skip + 1 : 1
+  Handlebars.registerHelper("inc", function (value, options) {
     return parseInt(value) + index;
-});
+  });
 
   Handlebars.registerHelper('ifCond', function (v1, v2, options) {
     if (v1 === v2) {
@@ -299,10 +365,17 @@ Handlebars.registerHelper("inc", function(value, options)
       accum += block.fn(i);
     return accum;
   });
-
-  adminhelpers.getPaginatedOrders(perPage,skip).then((orders) => {
-    res.render('admin/ordersadmin', { admin: true, layout: "admin-layout", orders ,totalDoc: productCount, currentPage: pageNum, pages: pages })
-  })
+  try {
+    adminhelpers.getPaginatedOrders(perPage, skip).then((orders) => {
+      res.render('admin/ordersadmin', { admin: true, layout: "admin-layout", orders, totalDoc: productCount, currentPage: pageNum, pages: pages })
+    }).catch((err) => {
+      console.log('error in add image', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in add image', err);
+    res.redirect('/admin/404')
+  }
 
 })
 
@@ -314,67 +387,119 @@ router.get('/view-orderedProducts/:id',verifyAdmin, async (req, res) => {
 
 router.get('/view-orderusers/:id',verifyAdmin, async (req, res) => {
   let user = await adminhelpers.getOrderuser(req.params.id)
-  console.log('hejeje');
-  console.log(user);
   res.render('admin/vieworderuser', { admin: true, layout: "admin-layout", user })
 
 });
 
 router.post('/changeStatus', (req, res) => {
-  console.log('api call');
-  console.log(req.body);
-  adminhelpers.changeStatus(req.body).then((response) => {
-    res.json(response)
+  try {
+    adminhelpers.changeStatus(req.body).then((response) => {
+      res.json(response)
 
-  })
+    }).then((err) => {
+      console.log('error in change status', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in change status', err);
+    res.redirect('/admin/404')
+  }
 });
 
-// ============================= Offer ======================
+// ============================= Offer ====================== //
 
-router.get('/offer',verifyAdmin, async (req, res) => {
+router.get('/offer', verifyAdmin, async (req, res) => {
 
   let category = await producthelpers.GetallCategory(req.body)
   let categoryOffer = await producthelpers.getCatOffers()
   let products = await producthelpers.getAllproducts()
-  let proOffer = await producthelpers.getProOffers().then((proOffer) => {
-    res.render('admin/offer', { admin: true, layout: "admin-layout", category, categoryOffer, proOffer, products })
-  })
+  try {
+    await producthelpers.getProOffers().then((proOffer) => {
+      res.render('admin/offer', { admin: true, layout: "admin-layout", category, categoryOffer, proOffer, products })
+    }).catch((err) => {
+      console.log('error in offer', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in offer', err);
+    res.redirect('/admin/404')
+  }
 })
 
-router.post('/addCategoryoffer',verifyAdmin, async (req, res) => {
+router.post('/addCategoryoffer', verifyAdmin, async (req, res) => {
   req.body.OfferPer = parseInt(req.body.OfferPer)
-  await producthelpers.CreateCatOffer(req.body).then(async (data) => {
-    await producthelpers.applyCatOffer(req.body)
-    res.redirect('/admin/offer')
-  })
+  try {
+    await producthelpers.CreateCatOffer(req.body).then(async (data) => {
+      await producthelpers.applyCatOffer(req.body)
+      res.redirect('/admin/offer')
+    }).catch((err) => {
+      console.log('error in add catoff', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in add catoff', err);
+    res.redirect('/admin/404')
+  }
 })
 
-router.post('/addProductoffer',verifyAdmin,async (req, res) => {
+router.post('/addProductoffer', verifyAdmin, async (req, res) => {
   req.body.ProOfferper = parseInt(req.body.ProOfferper)
-  await producthelpers.CreateProOffer(req.body).then(async () => {
-    res.redirect('/admin/offer')
-  })
+  try {
+    await producthelpers.CreateProOffer(req.body).then(async () => {
+      res.redirect('/admin/offer')
+    }).catch((err) => {
+      console.log('error in add prooff', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in add prooff', err);
+    res.redirect('/admin/404')
+  }
 })
 
 
 router.post('/applyOffer', async (req, res) => {
-  console.log(req.body, 'hey heheh');
-  await producthelpers.applyProOffer(req.body).then(() => {
-    res.redirect('/admin/offer')
-  })
+  try {
+    await producthelpers.applyProOffer(req.body).then(() => {
+      res.redirect('/admin/offer')
+    }).catch((err) => {
+      console.log('error in add applyoff', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in add apploff', err);
+    res.redirect('/admin/404')
+  }
 })
 
 router.post('/deleteProOffer', (req, res) => {
-  producthelpers.deleteProoffer(req.body).then(() => {
-    res.json(response)
-  })
+  try {
+    producthelpers.deleteProoffer(req.body).then(() => {
+      res.json(response)
+    }).catch((err) => {
+      console.log('error in delet prooff', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in delete prooff', err);
+    res.redirect('/admin/404')
+  }
 })
 
 router.post('/deleteOffer', (req, res) => {
-  producthelpers.deleteOffer(req.body).then((response) => {
-    res.json(response)
-  })
+  try {
+    producthelpers.deleteOffer(req.body).then((response) => {
+      res.json(response)
+    }).catch((err) => {
+      console.log('error in delete off', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in delte off', err);
+    res.redirect('/admin/404')
+  }
 })
+
 
 // ============================= Coupon ====================== //
 
@@ -384,50 +509,77 @@ router.get('/coupon',verifyAdmin, async (req, res) => {
   req.session.couponerr = null
 })
 
-router.post('/addCoupon',verifyAdmin, (req, res) => {
+router.post('/addCoupon', verifyAdmin, (req, res) => {
   req.body.couponOfferper = parseInt(req.body.couponOfferper)
   req.body.min = parseInt(req.body.min)
   req.body.max = parseInt(req.body.max)
-  producthelpers.addCoupon(req.body).then(() => {
-    res.redirect('/admin/coupon')
-  }).catch((error) => {
-    req.session.couponerr = error
-    res.redirect('/admin/coupon')
+  try {
+    producthelpers.addCoupon(req.body).then(() => {
+      res.redirect('/admin/coupon')
+    }).catch((error) => {
+      req.session.couponerr = error
+      res.redirect('/admin/coupon')
 
-  })
+    })
+  } catch (err) {
+    console.log('error in add coupon', err);
+    res.redirect('/admin/404')
+  }
 })
 
 router.post('/deleteCoupon', (req, res) => {
-  console.log('apicall', req.body);
-
-  producthelpers.deleteCoupon(req.body).then((response) => {
-    res.json(response)
-  })
+  try {
+    producthelpers.deleteCoupon(req.body).then((response) => {
+      res.json(response)
+    }).catch((err) => {
+      console.log('error in delte coupon', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in delete coupon', err);
+    res.redirect('/admin/404')
+  }
 })
 
-// ==================================== Banner ======================================//
+// ==================================== Banner ====================================== //
 
-router.get('/banner',verifyAdmin,(req,res)=>{
-  adminhelpers.getAllbanners().then((banner)=>{
-    res.render('admin/banner',{ admin: true, layout: "admin-layout",banner})
-  })
+router.get('/banner', verifyAdmin, (req, res) => {
+  try {
+    adminhelpers.getAllbanners().then((banner) => {
+      res.render('admin/banner', { admin: true, layout: "admin-layout", banner })
+    }).catch((err) => {
+      console.log('error in banner', err);
+      res.redirect('/admin/404')
+    })
+  } catch (err) {
+    console.log('error in add banner', err);
+    res.redirect('/admin/404')
+  }
 })
 
 router.get('/addbanner',verifyAdmin,(req,res)=>{
   res.render('admin/addbanner',{ admin: true, layout: "admin-layout"})
 })
 
-router.post('/addbanner',verifyAdmin,(req,res)=>{
-  adminhelpers.addBanner(req.body).then((id)=>{
-    let image = req.files.image
-    image.mv('./public/admin/bannerimage/' + id + '.jpg',(err, done) => {
-      if (!err) {
-        res.redirect('/admin/addbanner')
-      } else {
-        console.log(err);
-      }
+router.post('/addbanner', verifyAdmin, (req, res) => {
+  try {
+    adminhelpers.addBanner(req.body).then((id) => {
+      let image = req.files.image
+      image.mv('./public/admin/bannerimage/' + id + '.jpg', (err, done) => {
+        if (!err) {
+          res.redirect('/admin/addbanner')
+        } else {
+          console.log(err);
+        }
+      })
+    }).catch((err) => {
+      console.log('error in add banner', err);
+      res.redirect('/admin/404')
     })
-  })
+  } catch (err) {
+    console.log('error in add banner', err);
+    res.redirect('/admin/404')
+  }
 })
 
 router.get('/deactivate/:id',(req,res)=>{
