@@ -6,11 +6,12 @@ const producthelpers = require('../helpers/producthelpers');
 var router = express.Router();
 var Handlebars = require('handlebars');
 const userhelpers = require('../helpers/userhelpers')
+require("dotenv").config()
 
 
-const accountSid = "ACf9599650585d317cd352419f7e2e6d31";
-const authToken = "80378ff030aa069624737f4428951a6a";
-const serviceId = "VAfa767ec825bdf86fb26c6c7b703e9b7a"
+const accountSid = process.env.OTP_ACCOUNT_SID;
+const authToken = process.env.OTP_AUTH_TOKEN;
+const serviceId = process.env.OTP_SERVICE_ID
 
 // const accountSid = 'AC15add6ac693833e1e00f2d600cccf678';
 // const authToken = '93c96abed3d26a6a22d9ae8e2c021241';
@@ -20,8 +21,8 @@ const paypal = require('paypal-rest-sdk')
 
 paypal.configure({
   'mode': 'sandbox', //sandbox or live 
-  'client_id': 'AbwK80Hz9S9DMFRWnx27gk_HnH5Yp79LsgcIH4cPbVikKVr2dPW8olkNdpXhDsY6IvLuqii0mfx9abgD', // please provide your client id here 
-  'client_secret': 'EGe2sWEI99Qa1E3ODykn-5URZNLfu5HvfZfnMIkGphkBPYLCfRIUnV3TQY2UQnCgYdLXZRVd0GE1i1di' // provide your client secret here 
+  'client_id': process.env.PAYPAL_CLIENTID, // please provide your client id here 
+  'client_secret': process.env.PAYPAL_SECRETID // provide your client secret here 
 });
 
 

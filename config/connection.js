@@ -2,11 +2,11 @@ const mongoClient = require('mongodb').MongoClient
 const state = {
     db: null
 }
-
+require("dotenv").config()
 
 module.exports.connect = function (done) {
 
-    const url = "mongodb://0.0.0.0:27017";
+    const url = process.env.DATABASE;
 
     const dbname = 'Exotichijabs'
 
